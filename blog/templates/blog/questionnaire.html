@@ -1,0 +1,31 @@
+{% extends "blog/base.html" %}
+{% block content%}
+<h1>{{ survey.text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<table id="customers">
+    <tr>
+    <th>Item    </th>
+    <th> 0 </th>
+    <th> 1 </th>
+    <th> 2 </th>
+    <th> 3 </th>
+    </tr>
+<form action="{% url 'questionnaire' survey.id %}" method="post">
+{% csrf_token %}
+
+    {% for item in survey.items.all %}
+    <tr>
+    <td>{{item.text}}</td>
+        {% for choice in range %}
+        <td>
+        <input type="radio" name="item{{item.id}}" id="item{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="item{{ forloop.counter }}">{{ choice }}</label><br>
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+<td colspan="5"><input type="submit" value="Vote"></td>
+</form>
+</table>
+{% endblock content%}
