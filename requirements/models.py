@@ -23,7 +23,7 @@ class Requirement(Artifact):
     desc = models.TextField()
 
     def __str__(self):
-        return self.type+"-"+self.desc
+        return self.type.__str__()+"-"+self.desc.__str__()
 
 class Story(Artifact):
     desc = models.TextField
@@ -42,10 +42,10 @@ class Usecase(Artifact):
     preConditions = models.TextField(max_length=2000,blank=True)
     postConditions = models.TextField(max_length=2000,blank=True)
     trigger = models.TextField(max_length=2000,blank=True)
-    includes = models.ForeignKey("self",on_delete=None,related_name="extended_by",blank=True)
-    extendes = models.ForeignKey("self",on_delete=None,related_name="included_by",blank=True)
-    businessRules = models.ManyToManyField(BusinessRule)
-    requirements = models.ManyToManyField(Requirement)
+    includes = models.ForeignKey("self",on_delete=None,related_name="extended_by",blank=True,null=True)
+    extends = models.ForeignKey("self",on_delete=None,related_name="included_by",blank=True,null=True)
+    businessRules = models.ManyToManyField(BusinessRule, blank=True)
+    requirements = models.ManyToManyField(Requirement,blank=True)
 
 class Scenario(models.Model):
     SCENARIO_TYPES = (
@@ -53,7 +53,7 @@ class Scenario(models.Model):
         ('Alternate','Alternate'),
         ('Exception','Exception')
     )
-    entryPoint = models.CharField(max_length=20)
+    entryPoint = models.CharField(max_length=20, null=True, blank=True)
     desc = models.TextField(max_length=1000)
     type = models.CharField(max_length=200,choices=SCENARIO_TYPES)
     usecase = models.ForeignKey(Usecase,on_delete=models.CASCADE,related_name="scenarios")

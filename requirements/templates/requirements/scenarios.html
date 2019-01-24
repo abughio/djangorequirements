@@ -7,12 +7,7 @@
                 {% csrf_token %}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4"> Usecase </legend>
-                    {{ usecase_form|crispy }}
-                </fieldset>
-                {{ scenarioset.management_form }}
-                <fieldset>
-                    <legend class="border-bottom mb-4"> Scenarios </legend>
-                    {{ scenario_formset|crispy }}
+                    {{ formset|crispy }}
                 </fieldset>
                 <div class="form-group">
                     <button class="btn btn-outline-info" type="submit"> Save</button>
